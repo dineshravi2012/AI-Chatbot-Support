@@ -1,3 +1,4 @@
+import os
 import streamlit as st
 from snowflake.core import Root  # Requires snowflake>=0.8.0
 from snowflake.cortex import Complete
@@ -9,11 +10,11 @@ from snowflake.snowpark import Session
 snowpark_session = None
 
 def get_snowflake_session():
-    # Access credentials from Streamlit secrets
-    snowflake_credentials = st.secrets["SF_Dinesh2012"]
+    access credentials from streamlit secrets
+    snowflake_credentials = st.secrets["sf_dinesh2012"]
     global snowpark_session
-    if snowpark_session is None:
-        # Create Snowpark session
+    if snowpark_session is none:
+        # create snowpark session
         connection_parameters = {
             "account": snowflake_credentials["account"],
             "user": snowflake_credentials["user"],
@@ -22,8 +23,30 @@ def get_snowflake_session():
             "database": snowflake_credentials["database"],
             "schema": snowflake_credentials["schema"]
         }
-        snowpark_session = Session.builder.configs(connection_parameters).create()
+        snowpark_session = session.builder.configs(connection_parameters).create()
     return snowpark_session 
+
+# Access credentials from environment variables
+    # snowflake_credentials = {
+        # "account": os.getenv("SF_Dinesh2012_ACCOUNT"),
+        # "user": os.getenv("SF_Dinesh2012_USER"),
+        # "password": os.getenv("SF_Dinesh2012_PASSWORD"),
+        # "warehouse": os.getenv("SF_Dinesh2012_WAREHOUSE"),
+        # "database": os.getenv("SF_Dinesh2012_DATABASE"),
+        # "schema": os.getenv("SF_Dinesh2012_SCHEMA")
+    # }
+
+# # Validate that all credentials are present
+    # missing_keys = [key for key, value in snowflake_credentials.items() if not value]
+    # if missing_keys:
+        # st.error(f"Missing Snowflake credentials: {', '.join(missing_keys)}")
+        # st.stop()  # Stop execution if credentials are missing
+
+    # global snowpark_session
+    # if snowpark_session is None:
+        # # Create Snowpark session
+        # snowpark_session = Session.builder.configs(snowflake_credentials).create()
+    # return snowpark_session
 
 MODELS = [   
     "snowflake-arctic",
@@ -227,7 +250,7 @@ hide_streamlit_style = """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 def main():
-    st.title(":speech_balloon: Hello! I am your AI Chatbot, How can I assist you today?")
+    st.title(":speech_balloon: Hello! Welcome to Support AI, How can I assist you today?")
 
     init_session_state()
     init_service_metadata()
